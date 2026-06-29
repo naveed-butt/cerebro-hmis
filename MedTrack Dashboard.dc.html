@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f7f5f1;color:#1c1208;height:100vh;overflow:hidden;display:flex;flex-direction:column;transition:background .2s,color .2s}
+.tnav{background:#fff;border-bottom:1px solid #ede8df;height:60px;display:flex;align-items:center;padding:0 36px;flex-shrink:0;transition:background .2s,border-color .2s}
+.logo{font-size:20px;font-weight:800;color:#d97706;letter-spacing:-.5px;margin-right:28px;cursor:pointer}
+.navlink{padding:6px 14px;border-radius:6px;font-size:14px;font-weight:500;color:#78716c;cursor:pointer;transition:all .15s}
+.navlink:hover{background:#fef3c7;color:#92400e}
+.navlink.active{background:#fef3c7;color:#92400e;font-weight:600}
+.uchip{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 6px;border-radius:20px;border:1px solid #ede8df;cursor:pointer;transition:border-color .2s}
+.uav{width:30px;height:30px;border-radius:50%;background:#d97706;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.dk-wrap{display:flex;align-items:center;gap:8px;margin-left:16px}
+.dk-lbl{font-size:16px;line-height:1;user-select:none}
+.dk-tog{width:40px;height:22px;border-radius:11px;background:#e8dfd0;border:none;cursor:pointer;position:relative;flex-shrink:0;padding:0;display:block;transition:background .2s}
+.dk-tog.on{background:#d97706}
+.dk-thumb{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);pointer-events:none}
+.dk-tog.on .dk-thumb{left:21px}
+.scroll{flex:1;overflow-y:auto;transition:background .2s}
+.page{max-width:1160px;margin:0 auto;padding:28px 28px 60px}
+.sc{background:#fff;border-radius:10px;border:1px solid #ede8df;padding:20px 22px;transition:background .2s,border-color .2s}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.sc-n{font-size:28px;font-weight:700;line-height:1;margin-bottom:5px}
+.sc-l{font-size:12px;color:#a8a29e;font-weight:500}
+.sc-d{font-size:11px;color:#15803d;margin-top:4px}
+.tblw{background:#fff;border-radius:10px;border:1px solid #ede8df;overflow:hidden;transition:background .2s,border-color .2s}
+.tctl{padding:14px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f5f0e8;transition:border-color .2s}
+.sw{position:relative;max-width:260px;flex:1}
+.si{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#a8a29e;pointer-events:none;font-size:13px}
+.srch{width:100%;border:1.5px solid #e8dfd0;border-radius:7px;padding:8px 12px 8px 34px;font-size:13px;background:#fafaf7;font-family:inherit;color:#1c1208;outline:none;transition:border-color .15s,background .2s,color .2s}
+.srch:focus{border-color:#d97706}
+.fbtn{border:1.5px solid #e8dfd0;border-radius:7px;padding:7px 13px;font-size:13px;color:#78716c;background:#fff;cursor:pointer;font-family:inherit;transition:background .2s,border-color .2s,color .2s}
+.abtn{background:#d97706;color:#fff;border:none;border-radius:7px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-left:auto;transition:opacity .15s}
+.abtn:hover{opacity:.9}
+.pgrd{display:grid}
+.prow{display:grid;grid-template-columns:2.5fr 0.6fr 1fr 1fr 1fr 1fr 36px;align-items:center;padding:0 20px;border-bottom:1px solid #f8f5f0;transition:background .15s,border-color .2s}
+.prow.hdr{background:#fafaf7;border-bottom:1px solid #f0ebe0}
+.prow:not(.hdr):hover{background:#fef9f2;cursor:pointer}
+.prow:last-child{border-bottom:none}
+.thx{padding:9px 0;font-size:11px;font-weight:600;color:#a8a29e;text-transform:uppercase;letter-spacing:.5px}
+.tdx{padding:13px 0;font-size:14px}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.ptn{font-weight:600;font-size:14px;color:#1c1208}
+.ptid{font-size:11px;color:#a8a29e;margin-top:1px}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.b-am{background:#fef3c7;color:#92400e}.b-bl{background:#dbeafe;color:#1e40af}.b-gr{background:#dcfce7;color:#15803d}.b-re{background:#fee2e2;color:#dc2626}.b-pu{background:#ede9fe;color:#5b21b6}.b-pk{background:#fce7f3;color:#9d174d}
+.srow{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:500}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.d-gr{background:#15803d}.d-re{background:#dc2626}.d-bl{background:#0891b2}
+.t-gr{color:#15803d}.t-re{color:#dc2626}.t-bl{color:#0891b2}
+.gbtn{width:28px;height:28px;border-radius:50%;border:1.5px solid #e8dfd0;display:flex;align-items:center;justify-content:center;color:#a8a29e;font-size:12px;flex-shrink:0;transition:background .15s,border-color .15s,color .15s}
+.prow:hover .gbtn{background:#fef3c7;border-color:#d97706;color:#92400e}
+.pgft{padding:13px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #f0ebe0;transition:border-color .2s}
+.pgbs{display:flex;gap:4px}
+.pgb{padding:4px 10px;border:1.5px solid #e8dfd0;border-radius:5px;font-size:12px;background:#fff;cursor:pointer;color:#78716c;transition:background .2s,border-color .2s}
+.pgb.on{background:#d97706;border-color:#d97706;color:#fff}
+.sh{margin-bottom:24px}
+.sh-t{font-size:22px;font-weight:700;color:#1c1208}
+.sh-s{font-size:13px;color:#a8a29e;margin-top:3px}
+.bk{font-size:13px;color:#a8a29e;cursor:pointer;display:inline-flex;align-items:center;gap:4px;margin-bottom:18px;transition:color .12s}
+.bk:hover{color:#d97706}
+.hero{background:#fff;border-radius:10px;border:1px solid #ede8df;padding:22px 24px;margin-bottom:16px;display:flex;align-items:center;gap:20px;transition:background .2s,border-color .2s}
+.hav{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0}
+.hn{font-size:22px;font-weight:700;margin-bottom:6px}
+.hm{font-size:13px;color:#78716c;display:flex;gap:16px;flex-wrap:wrap}
+.hact{margin-left:auto;display:flex;gap:8px;flex-shrink:0}
+.obtn{border:1.5px solid #e8dfd0;background:#fff;border-radius:7px;padding:7px 16px;font-size:13px;font-weight:500;color:#78716c;cursor:pointer;font-family:inherit;transition:background .2s,border-color .2s,color .2s}
+.pbtn{background:#d97706;color:#fff;border:none;border-radius:7px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.hstats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.hsc{background:#fffdf9;border:1px solid #ede8df;border-radius:8px;padding:14px 16px;transition:background .2s,border-color .2s}
+.hs-n{font-size:20px;font-weight:700;color:#d97706}
+.hs-l{font-size:11px;color:#a8a29e;margin-top:2px;font-weight:500}
+.ptabs{display:flex;border-bottom:2px solid #f0e8da;margin-bottom:22px;transition:border-color .2s}
+.ptab{padding:10px 18px;font-size:14px;font-weight:500;color:#78716c;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .12s}
+.ptab:hover{color:#d97706}
+.ptab.active{color:#d97706;border-bottom-color:#d97706;font-weight:600}
+.vlist{display:flex;flex-direction:column;gap:12px}
+.vi{background:#fff;border:1px solid #ede8df;border-radius:8px;padding:16px 20px;display:flex;gap:16px;transition:background .2s,border-color .2s}
+.vi-dt{min-width:48px}
+.vi-day{font-size:18px;font-weight:700}
+.vi-mon{font-size:10px;color:#a8a29e;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.vi-main{flex:1}
+.vi-type{font-size:14px;font-weight:600;margin-bottom:4px}
+.vi-note{font-size:13px;color:#78716c;line-height:1.6}
+.vi-b{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;background:#fef3c7;color:#92400e;margin-top:8px}
+.dxl{display:flex;flex-direction:column;gap:10px}
+.dxi{background:#fff;border:1px solid #ede8df;border-radius:8px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .2s,border-color .2s}
+.notes-a{background:#fff;border:1px solid #ede8df;border-radius:8px;padding:22px 24px;font-size:14px;color:#78716c;line-height:1.75;transition:background .2s,border-color .2s,color .2s}
+.lab-drop{border:2px dashed #e8dfd0;border-radius:10px;padding:36px 24px;text-align:center;cursor:pointer;background:#fffdf9;transition:border-color .15s,background .15s;margin-bottom:20px;display:block}
+.lab-drop:hover{border-color:#d97706;background:#fef9f2}
+.lab-list{display:flex;flex-direction:column;gap:10px}
+.lab-item{background:#fff;border:1px solid #ede8df;border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:14px;transition:background .2s,border-color .2s}
+.lab-icon{width:38px;height:38px;border-radius:8px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.lab-n{font-size:14px;font-weight:600}
+.lab-m{font-size:12px;color:#a8a29e;margin-top:2px}
+.lab-pbtn{padding:5px 12px;border:1.5px solid #e8dfd0;border-radius:6px;font-size:12px;font-weight:500;color:#78716c;cursor:pointer;background:#fff;font-family:inherit;transition:background .15s,border-color .15s,color .15s}
+.lab-pbtn:hover{background:#fef3c7;border-color:#d97706;color:#92400e}
+.lpmodal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:200}
+.lpinner{background:#fff;border-radius:12px;padding:28px;width:580px;max-height:80vh;overflow-y:auto;position:relative;transition:background .2s}
+.lp-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border:none;border-radius:50%;background:#f0e8da;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;font-family:inherit;color:#78716c;transition:background .15s}
+.lp-close:hover{background:#fef3c7}
+.lr-row{display:grid;grid-template-columns:1.8fr 1fr 1.2fr 0.8fr;align-items:center;padding:11px 0;border-bottom:1px solid #f5f0e8;font-size:13px}
+.lr-row:last-child{border-bottom:none}
+.lr-hdr{font-size:10.5px;font-weight:700;color:#a8a29e;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid #f0e8da;padding-bottom:8px}
+.lr-hi{color:#dc2626;font-weight:600}.lr-lo{color:#0891b2;font-weight:600}.lr-ok{color:#15803d;font-weight:500}
+.wstrip{background:#fff;border-radius:10px;border:1px solid #ede8df;padding:14px 16px;margin-bottom:20px;display:flex;gap:6px;transition:background .2s,border-color .2s}
+.wday{flex:1;text-align:center;padding:10px 4px;border-radius:8px;cursor:pointer;transition:background .12s}
+.wday:hover{background:#fef9f2}
+.wday.tod{background:#d97706}
+.wdn{font-size:10px;color:#a8a29e;font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.wday.tod .wdn{color:rgba(255,255,255,.75)}
+.wdd{font-size:18px;font-weight:700}
+.wday.tod .wdd{color:#fff}
+.alist{display:flex;flex-direction:column;gap:10px}
+.ac{background:#fff;border:1px solid #ede8df;border-radius:8px;padding:14px 18px;display:flex;align-items:center;gap:14px;transition:border-color .15s,background .2s}
+.ac:hover{border-color:#d97706}
+.at{font-size:14px;font-weight:700;color:#d97706;min-width:64px;flex-shrink:0}
+.asep{width:1px;height:34px;background:#f0e8da;flex-shrink:0;transition:background .2s}
+.ai{flex:1}
+.an{font-size:14px;font-weight:600}
+.atp{font-size:12px;color:#a8a29e;margin-top:2px}
+.canc{opacity:.38}
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.fchrt{background:#fff;border-radius:10px;border:1px solid #ede8df;padding:22px 24px;margin-bottom:20px;transition:background .2s,border-color .2s}
+.fct{font-size:15px;font-weight:600;margin-bottom:3px}
+.fcs{font-size:12px;color:#a8a29e;margin-bottom:18px}
+.txnw{background:#fff;border-radius:10px;border:1px solid #ede8df;overflow:hidden;transition:background .2s,border-color .2s}
+.txnh{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0e8da;transition:border-color .2s}
+.txnht{font-size:15px;font-weight:600}
+.txnr{display:grid;grid-template-columns:1.4fr 1.2fr 0.8fr 0.7fr 0.8fr;align-items:center;padding:13px 20px;border-top:1px solid #f8f5f0;font-size:14px;transition:border-color .2s}
+.txnh2{font-size:11px;font-weight:600;color:#a8a29e;text-transform:uppercase;letter-spacing:.5px;background:#fafaf7;padding-top:11px;padding-bottom:11px;border-top:none;transition:background .2s}
+.rxal{background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#dc2626;font-weight:500;display:flex;align-items:center;gap:10px;transition:background .2s,border-color .2s}
+.rxc{background:#fff;border:1px solid #ede8df;border-radius:10px;padding:18px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:background .2s,border-color .2s}
+.rxd{font-size:16px;font-weight:700;margin-bottom:4px}
+.rxm{font-size:13px;color:#78716c}
+.rxact{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.empty{text-align:center;padding:40px 20px;color:#a8a29e;font-size:14px}
+.intk{max-width:700px}
+.intk-card{background:#fff;border:1px solid #ede8df;border-radius:10px;padding:22px 24px;margin-bottom:16px;transition:background .2s,border-color .2s}
+.intk-sec{font-size:12px;font-weight:700;color:#1c1208;text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #f0e8da;transition:color .2s,border-color .2s}
+.intk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.intk-field{display:flex;flex-direction:column;gap:5px}
+.intk-field.full{grid-column:1/-1}
+.intk-lbl{font-size:12px;font-weight:600;color:#78716c;transition:color .2s}
+.intk-inp{border:1.5px solid #e8dfd0;border-radius:7px;padding:9px 12px;font-size:14px;font-family:inherit;color:#1c1208;background:#fafaf7;outline:none;transition:border-color .15s,background .2s,color .2s;width:100%}
+.intk-inp:focus{border-color:#d97706}
+.intk-inp::placeholder{color:#c9c3bb}
+.intk-sel{border:1.5px solid #e8dfd0;border-radius:7px;padding:9px 12px;font-size:14px;font-family:inherit;color:#1c1208;background:#fafaf7;outline:none;cursor:pointer;width:100%;transition:border-color .15s,background .2s,color .2s}
+.intk-ta{border:1.5px solid #e8dfd0;border-radius:7px;padding:9px 12px;font-size:14px;font-family:inherit;color:#1c1208;background:#fafaf7;outline:none;resize:vertical;min-height:80px;width:100%;transition:border-color .15s,background .2s,color .2s}
+.intk-ta:focus,.intk-inp:focus,.intk-sel:focus{border-color:#d97706}
+.intk-ta::placeholder,.intk-inp::placeholder{color:#c9c3bb}
+.intk-act{display:flex;gap:12px;justify-content:flex-end;margin-top:4px}
+/* ── Dark mode ── */
+body.dark{background:#13110e;color:#e8e0d0}
+body.dark .tnav{background:#171410;border-bottom-color:#2e2b22}
+body.dark .uchip{border-color:#2e2b22;background:#171410}
+body.dark .navlink{color:#8a8070}
+body.dark .navlink.active{background:#3a2a0a;color:#d97706}
+body.dark .navlink:hover{background:#2e2a1a;color:#d97706}
+body.dark .scroll{background:#13110e}
+body.dark .sh-t{color:#e8e0d0}
+body.dark .sh-s,.body.dark .bk{color:#6b6050}
+body.dark .bk{color:#6b6050}
+body.dark .sc{background:#1c1a16;border-color:#2e2b22}
+body.dark .sc-l{color:#8a8070}
+body.dark .tblw{background:#1c1a16;border-color:#2e2b22}
+body.dark .tctl{border-bottom-color:#2e2b22}
+body.dark .srch{background:#13110e;border-color:#3a3520;color:#e8e0d0}
+body.dark .fbtn{background:#1c1a16;border-color:#2e2b22;color:#8a8070}
+body.dark .prow.hdr{background:#171410;border-bottom-color:#2e2b22}
+body.dark .prow{border-bottom-color:#242018}
+body.dark .prow:not(.hdr):hover{background:#242018}
+body.dark .thx{color:#6b6050}
+body.dark .ptn{color:#e8e0d0}
+body.dark .ptid,.body.dark .tdx{color:#c9c3bb}
+body.dark .tdx{color:#c9c3bb}
+body.dark .gbtn{border-color:#2e2b22;background:#1c1a16;color:#6b6050}
+body.dark .prow:hover .gbtn{background:#3a2a0a;border-color:#92400e;color:#d97706}
+body.dark .pgft{border-top-color:#2e2b22}
+body.dark .pgb{background:#1c1a16;border-color:#2e2b22;color:#8a8070}
+body.dark .hero{background:#1c1a16;border-color:#2e2b22}
+body.dark .hn{color:#e8e0d0}
+body.dark .hm{color:#8a8070}
+body.dark .hsc{background:#171410;border-color:#2e2b22}
+body.dark .hs-l{color:#6b6050}
+body.dark .obtn{background:#1c1a16;border-color:#2e2b22;color:#8a8070}
+body.dark .ptabs{border-bottom-color:#2e2b22}
+body.dark .ptab{color:#8a8070}
+body.dark .vi{background:#1c1a16;border-color:#2e2b22}
+body.dark .vi-day{color:#e8e0d0}
+body.dark .vi-type{color:#e8e0d0}
+body.dark .vi-note{color:#8a8070}
+body.dark .dxi{background:#1c1a16;border-color:#2e2b22}
+body.dark .notes-a{background:#1c1a16;border-color:#2e2b22;color:#8a8070}
+body.dark .lab-drop{background:#171410;border-color:#3a3520}
+body.dark .lab-drop:hover{background:#1c1a16;border-color:#d97706}
+body.dark .lab-item{background:#1c1a16;border-color:#2e2b22}
+body.dark .lab-n{color:#e8e0d0}
+body.dark .lab-m{color:#6b6050}
+body.dark .lab-pbtn{background:#1c1a16;border-color:#2e2b22;color:#8a8070}
+body.dark .lpinner{background:#1c1a16}
+body.dark .lp-close{background:#2e2b22;color:#8a8070}
+body.dark .lr-row{border-bottom-color:#2e2b22;color:#c9c3bb}
+body.dark .lr-hdr{border-bottom-color:#2e2b22;color:#6b6050}
+body.dark .wstrip{background:#1c1a16;border-color:#2e2b22}
+body.dark .wdn{color:#6b6050}
+body.dark .wdd{color:#e8e0d0}
+body.dark .ac{background:#1c1a16;border-color:#2e2b22}
+body.dark .asep{background:#2e2b22}
+body.dark .an{color:#e8e0d0}
+body.dark .atp{color:#6b6050}
+body.dark .fchrt{background:#1c1a16;border-color:#2e2b22}
+body.dark .fct{color:#e8e0d0}
+body.dark .fcs{color:#6b6050}
+body.dark .txnw{background:#1c1a16;border-color:#2e2b22}
+body.dark .txnh{border-bottom-color:#2e2b22}
+body.dark .txnht{color:#e8e0d0}
+body.dark .txnr{border-top-color:#242018;color:#c9c3bb}
+body.dark .txnh2{background:#171410;color:#6b6050;border-bottom-color:#2e2b22}
+body.dark .rxal{background:#2d1515;border-color:#7f1d1d}
+body.dark .rxc{background:#1c1a16;border-color:#2e2b22}
+body.dark .rxd{color:#e8e0d0}
+body.dark .rxm{color:#8a8070}
+body.dark .intk-card{background:#1c1a16;border-color:#2e2b22}
+body.dark .intk-sec{color:#e8e0d0;border-bottom-color:#2e2b22}
+body.dark .intk-lbl{color:#8a8070}
+body.dark .intk-inp,body.dark .intk-sel,body.dark .intk-ta{background:#13110e;border-color:#3a3520;color:#e8e0d0}
+body.dark .dk-tog{background:#3a3520}
+</style>
+</helmet>
+
+<div class="tnav">
+<div class="logo" onClick="{{ goPat }}">MedTrack</div>
+<div class="fx gap8">
+<div class="{{ navPat }}" onClick="{{ goPat }}">Patients</div>
+<div class="{{ navAppts }}" onClick="{{ goAppts }}">Appointments</div>
+<div class="{{ navFin }}" onClick="{{ goFin }}">Billing</div>
+<div class="{{ navRx }}" onClick="{{ goRx }}">Prescriptions</div>
+</div>
+<div class="dk-wrap"><span class="dk-lbl">{{ darkLabel }}</span><button class="{{ darkTogClass }}" onClick="{{ toggleDark }}"><div class="dk-thumb"></div></button></div>
+<div class="uchip" style="margin-left:16px"><div class="uav">DL</div><span style="font-size:13px;font-weight:600">Dr. Lee</span><span style="color:#a8a29e;font-size:12px;margin-left:2px">▾</span></div>
+</div>
+
+<div class="scroll">
+
+<sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+<div class="page">
+<div class="sh"><div class="sh-t">Good morning, Dr. Lee</div><div class="sh-s">Sunday, Jun 29, 2026 · 4 appointments today</div></div>
+<div class="sgrid" style="grid-template-columns:repeat(2,1fr)">
+<div class="sc"><div class="sc-n">47</div><div class="sc-l">Total Patients</div><div class="sc-d">↑ 3 this month</div></div>
+<div class="sc"><div class="sc-n">4</div><div class="sc-l">Today's Appointments</div></div>
+</div>
+<div class="tblw">
+<div class="tctl"><div class="sw"><span class="si">🔍</span><input class="srch" placeholder="Search patients…" type="text"></div><button class="fbtn">Condition ▾</button><button class="fbtn">Sort ▾</button><button class="abtn" onClick="{{ goIntake }}">+ Add Patient</button></div>
+<div class="pgrd">
+<div class="prow hdr"><div class="thx">Patient</div><div class="thx">Age</div><div class="thx">Condition</div><div class="thx">Last Visit</div><div class="thx">Next Appt</div><div class="thx">Status</div><div class="thx"></div></div>
+<sc-for list="{{ patients }}" as="p" hint-placeholder-count="4">
+<div class="prow" data-pt="{{ $index }}">
+<div class="tdx"><div class="fx ac gap10"><div class="av" style="{{ p.avatarStyle }}">{{ p.initials }}</div><div><div class="ptn">{{ p.name }}</div><div class="ptid">{{ p.id }}</div></div></div></div>
+<div class="tdx">{{ p.age }} · {{ p.sex }}</div>
+<div class="tdx"><span class="{{ p.condClass }}">{{ p.condTag }}</span></div>
+<div class="tdx" style="color:#a8a29e">{{ p.lastVisit }}</div>
+<div class="tdx">{{ p.nextAppt }}</div>
+<div class="tdx"><div class="srow"><div class="{{ p.dotClass }}"></div><span class="{{ p.txtClass }}">{{ p.statusLabel }}</span></div></div>
+<div class="tdx"><div class="gbtn">→</div></div>
+</div>
+</sc-for>
+</div>
+<div class="pgft"><span style="font-size:12px;color:#a8a29e">Showing 6 of 47 patients</span><div class="pgbs"><div class="pgb on">1</div><div class="pgb">2</div><div class="pgb">3</div><div class="pgb">…</div></div></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPatient }}" hint-placeholder-val="{{ false }}">
+<div class="page">
+<div class="bk" onClick="{{ goBack }}">← All Patients</div>
+<div class="hero">
+<div class="hav" style="{{ patientAvatarStyle }}">{{ patientInitials }}</div>
+<div style="flex:1"><div class="hn">{{ patientName }}</div><div class="hm"><span>{{ patientSex }} · {{ patientAge }} yrs</span><span>DOB: {{ patientDob }}</span><span>{{ patientPhone }}</span><span>{{ patientInsurance }}</span><span style="color:#c9c3bb">ID: {{ patientId }}</span></div></div>
+<div class="hact"><button class="obtn">Edit Info</button><button class="pbtn">+ Visit Note</button></div>
+</div>
+<div class="hstats">
+<div class="hsc"><div class="hs-n">{{ patientTotalVisits }}</div><div class="hs-l">Total Visits</div></div>
+<div class="hsc"><div class="hs-n">{{ patientLastVisit }}</div><div class="hs-l">Last Visit</div></div>
+<div class="hsc"><div class="hs-n">{{ patientNextAppt }}</div><div class="hs-l">Next Appointment</div></div>
+<div class="hsc"><div class="hs-n">{{ patientBilled }}</div><div class="hs-l">Total Billed</div></div>
+</div>
+<div class="ptabs">
+<div class="{{ tabH }}" onClick="{{ setTabH }}">History</div>
+<div class="{{ tabD }}" onClick="{{ setTabD }}">Diagnoses</div>
+<div class="{{ tabR }}" onClick="{{ setTabR }}">Prescriptions</div>
+<div class="{{ tabN }}" onClick="{{ setTabN }}">Notes</div>
+<div class="{{ tabL }}" onClick="{{ setTabL }}">Labs</div>
+</div>
+<sc-if value="{{ isHistTab }}" hint-placeholder-val="{{ true }}">
+<div class="vlist">
+<sc-for list="{{ visits }}" as="v" hint-placeholder-count="2">
+<div class="vi"><div class="vi-dt"><div class="vi-day">{{ v.day }}</div><div class="vi-mon">{{ v.mon }}</div></div><div class="vi-main"><div class="vi-type">{{ v.type }}</div><div class="vi-note">{{ v.notes }}</div><div class="vi-b">{{ v.badge }}</div></div></div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ isDxTab }}" hint-placeholder-val="{{ false }}">
+<div class="dxl">
+<sc-for list="{{ diagnoses }}" as="dx" hint-placeholder-count="2">
+<div class="dxi"><div><div style="font-weight:600;font-size:14px">{{ dx.label }}</div><div style="font-size:12px;color:#a8a29e;margin-top:3px">ICD-10: {{ dx.code }} · Since {{ dx.since }}</div></div><span class="{{ dx.sevClass }}">{{ dx.severity }}</span></div>
+</sc-for>
+<div class="dxi" style="border:1.5px dashed #e8dfd0;background:#fafaf7;cursor:pointer;justify-content:center"><span style="font-size:13px;font-weight:500;color:#a8a29e">+ Add Diagnosis</span></div>
+</div>
+</sc-if>
+<sc-if value="{{ isRxTab }}" hint-placeholder-val="{{ false }}">
+<div>
+<sc-for list="{{ rxForPatient }}" as="rx" hint-placeholder-count="2">
+<div class="rxc"><div style="flex:1"><div class="rxd">{{ rx.drug }} <span style="font-size:14px;font-weight:500;color:#78716c">{{ rx.dose }}</span></div><div class="rxm">{{ rx.freq }} · Refills: {{ rx.refills }} · Expires: {{ rx.expires }}</div></div><div class="rxact"><span class="{{ rx.statusClass }}">{{ rx.statusLabel }}</span><button class="obtn" style="font-size:12px;padding:4px 12px">Renew</button></div></div>
+</sc-for>
+<sc-if value="{{ hasNoRx }}" hint-placeholder-val="{{ false }}"><div class="empty">No active prescriptions for this patient.</div></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ isNotesTab }}" hint-placeholder-val="{{ false }}">
+<div class="notes-a"><div style="font-weight:600;font-size:14px;margin-bottom:12px;color:#1c1208">Clinical Notes — {{ patientName }}</div><div>Patient is compliant with medication regimen. Self-monitoring BP at home and logging readings. Advised to reduce occupational stress and maintain daily 30-min walks. Consider cardiology referral if BP does not stabilise by Sep 2026. Anxiety is mild and managed with lifestyle interventions for now.</div><div style="font-size:12px;color:#a8a29e;margin-top:16px">Last updated: Jun 12, 2026 · Dr. Lee</div></div>
+</sc-if>
+<sc-if value="{{ isLabTab }}" hint-placeholder-val="{{ false }}">
+<div>
+<label class="lab-drop"><div style="font-size:36px;margin-bottom:10px">📁</div><div style="font-weight:600;font-size:15px;color:#1c1208;margin-bottom:5px">Upload Lab Report</div><div style="font-size:13px;color:#a8a29e">Drag &amp; drop a PDF, JPG, or PNG — or click to browse</div><input type="file" style="display:none" accept=".pdf,.jpg,.png,.jpeg"></label>
+<div style="font-size:11px;font-weight:700;color:#a8a29e;text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px">Uploaded Reports</div>
+<div class="lab-list">
+<sc-for list="{{ labFiles }}" as="lf" hint-placeholder-count="2">
+<div class="lab-item"><div class="lab-icon">{{ lf.icon }}</div><div style="flex:1"><div class="lab-n">{{ lf.name }}</div><div class="lab-m">{{ lf.type }} · {{ lf.size }}</div></div><button class="lab-pbtn" data-lab-preview="1">Preview →</button></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ labPreviewOpen }}" hint-placeholder-val="{{ false }}">
+<div class="lpmodal" onClick="{{ closeLabPreview }}">
+<div class="lpinner" onClick="{{ stopProp }}">
+<button class="lp-close" onClick="{{ closeLabPreview }}">✕</button>
+<div style="margin-bottom:20px"><div style="font-weight:700;font-size:16px;margin-bottom:4px">CBC Full Panel — Jun 12, 2026</div><div style="font-size:13px;color:#a8a29e">Maria Santos · P-0024 · Ordered by Dr. Lee</div></div>
+<div class="lr-row lr-hdr"><div>Test</div><div>Result</div><div>Reference Range</div><div>Flag</div></div>
+<div class="lr-row"><div>Hemoglobin</div><div>14.2 g/dL</div><div>13.5 – 17.5</div><div class="lr-ok">Normal</div></div>
+<div class="lr-row"><div>White Blood Cells</div><div>7.8 K/μL</div><div>4.5 – 11.0</div><div class="lr-ok">Normal</div></div>
+<div class="lr-row"><div>Platelets</div><div>215 K/μL</div><div>150 – 400</div><div class="lr-ok">Normal</div></div>
+<div class="lr-row"><div>Creatinine</div><div>1.1 mg/dL</div><div>0.7 – 1.3</div><div class="lr-ok">Normal</div></div>
+<div class="lr-row"><div>Glucose (fasting)</div><div class="lr-hi">112 mg/dL</div><div>70 – 100</div><div class="lr-hi">↑ High</div></div>
+<div class="lr-row"><div>Total Cholesterol</div><div class="lr-hi">218 mg/dL</div><div>&lt; 200</div><div class="lr-hi">↑ High</div></div>
+<div class="lr-row"><div>HDL Cholesterol</div><div>45 mg/dL</div><div>&gt; 40</div><div class="lr-ok">Normal</div></div>
+<div class="lr-row"><div>LDL Cholesterol</div><div class="lr-hi">148 mg/dL</div><div>&lt; 130</div><div class="lr-hi">↑ High</div></div>
+<div style="margin-top:20px;padding:12px 14px;background:#fef3c7;border-radius:8px;font-size:13px;color:#92400e">⚠ Glucose and LDL are above reference range. Consider dietary counselling and follow-up lipid panel in 3 months.</div>
+</div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAppointments }}" hint-placeholder-val="{{ false }}">
+<div class="page">
+<div class="sh fx ac jb"><div><div class="sh-t">Appointments</div><div class="sh-s">Week of Jun 23 – 29, 2026</div></div><button class="pbtn">+ Schedule</button></div>
+<div class="wstrip">
+<div class="wday"><div class="wdn">Mon</div><div class="wdd">23</div></div>
+<div class="wday"><div class="wdn">Tue</div><div class="wdd">24</div></div>
+<div class="wday"><div class="wdn">Wed</div><div class="wdd">25</div></div>
+<div class="wday"><div class="wdn">Thu</div><div class="wdd">26</div></div>
+<div class="wday"><div class="wdn">Fri</div><div class="wdd">27</div></div>
+<div class="wday"><div class="wdn">Sat</div><div class="wdd">28</div></div>
+<div class="wday tod"><div class="wdn">Sun</div><div class="wdd">29</div></div>
+</div>
+<div style="font-size:11px;font-weight:700;color:#a8a29e;text-transform:uppercase;letter-spacing:.7px;margin-bottom:14px">Today — Sunday, Jun 29</div>
+<div class="alist">
+<sc-for list="{{ appointments }}" as="appt" hint-placeholder-count="3">
+<div class="{{ appt.cardClass }}"><div class="at">{{ appt.time }}</div><div class="asep"></div><div class="ai"><div class="an">{{ appt.name }}</div><div class="atp">{{ appt.type }} · {{ appt.dur }}</div></div><span class="{{ appt.stBadge }}">{{ appt.stText }}</span></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFinancials }}" hint-placeholder-val="{{ false }}">
+<div class="page">
+<div class="sh fx ac jb"><div><div class="sh-t">Billing &amp; Revenue</div><div class="sh-s">Fiscal Year 2026</div></div><div class="fx gap8"><button class="obtn">2025 ↔</button><button class="obtn">Export ↓</button></div></div>
+<div class="fg">
+<div class="sc"><div class="sc-n" style="color:#d97706">$58,420</div><div class="sc-l">YTD Revenue</div><div class="sc-d">↑ 18% vs 2025</div></div>
+<div class="sc"><div class="sc-n">$54,220</div><div class="sc-l">Collected</div></div>
+<div class="sc"><div class="sc-n" style="color:#dc2626">$4,200</div><div class="sc-l">Outstanding</div></div>
+</div>
+<div class="fchrt">
+<div class="fct">Monthly Revenue — 2026</div>
+<div class="fcs">January through June (year-to-date)</div>
+<svg width="100%" height="140" viewBox="0 0 900 140" style="display:block">
+<line x1="0" y1="100" x2="900" y2="100" stroke="#ede8df" stroke-width="1"/>
+<line x1="0" y1="66" x2="900" y2="66" stroke="#f5f0e8" stroke-width="1"/>
+<line x1="0" y1="33" x2="900" y2="33" stroke="#f5f0e8" stroke-width="1"/>
+<rect x="30" y="62" width="90" height="38" fill="#d97706" opacity=".26" rx="4"/>
+<rect x="180" y="51" width="90" height="49" fill="#d97706" opacity=".36" rx="4"/>
+<rect x="330" y="36" width="90" height="64" fill="#d97706" opacity=".56" rx="4"/>
+<rect x="480" y="41" width="90" height="59" fill="#d97706" opacity=".50" rx="4"/>
+<rect x="630" y="20" width="90" height="80" fill="#d97706" opacity=".80" rx="4"/>
+<rect x="780" y="24" width="90" height="76" fill="#d97706" rx="4"/>
+<text x="75" y="55" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">$6.1k</text>
+<text x="225" y="44" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">$7.8k</text>
+<text x="375" y="29" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">$10.2k</text>
+<text x="525" y="34" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">$9.4k</text>
+<text x="675" y="13" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">$12.7k</text>
+<text x="825" y="17" font-family="DM Sans,system-ui" font-size="12" fill="#d97706" text-anchor="middle" font-weight="600">$12.1k</text>
+<text x="75" y="120" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">Jan</text>
+<text x="225" y="120" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">Feb</text>
+<text x="375" y="120" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">Mar</text>
+<text x="525" y="120" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">Apr</text>
+<text x="675" y="120" font-family="DM Sans,system-ui" font-size="12" fill="#c9c3bb" text-anchor="middle">May</text>
+<text x="825" y="120" font-family="DM Sans,system-ui" font-size="12" fill="#d97706" text-anchor="middle" font-weight="600">Jun ★</text>
+</svg>
+</div>
+<div class="txnw">
+<div class="txnh"><span class="txnht">Recent Transactions</span><button class="obtn" style="font-size:12px;padding:5px 12px">View All</button></div>
+<div class="txnr txnh2"><div>Patient</div><div>Service</div><div>Date</div><div>Amount</div><div>Status</div></div>
+<sc-for list="{{ transactions }}" as="txn" hint-placeholder-count="3">
+<div class="txnr"><div style="font-weight:500">{{ txn.patient }}</div><div style="font-size:13px;color:#78716c">{{ txn.service }}</div><div style="font-size:13px;color:#a8a29e">{{ txn.date }}</div><div style="font-weight:600">{{ txn.amount }}</div><div><span class="{{ txn.stClass }}">{{ txn.stLabel }}</span></div></div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPrescriptions }}" hint-placeholder-val="{{ false }}">
+<div class="page">
+<div class="sh fx ac jb"><div><div class="sh-t">Prescriptions</div><div class="sh-s">Active medications across all patients</div></div><button class="pbtn">+ New Prescription</button></div>
+<div class="rxal">⚠ 1 prescription requires renewal — Priya Mehta · Salbutamol Inhaler (0 refills remaining)</div>
+<div class="tctl" style="background:#fff;border-radius:10px;border:1px solid #ede8df;margin-bottom:20px"><div class="sw"><span class="si">🔍</span><input class="srch" placeholder="Filter by patient or medication…" type="text"></div><button class="fbtn">Status ▾</button><button class="fbtn">Patient ▾</button></div>
+<sc-for list="{{ prescriptions }}" as="rx" hint-placeholder-count="3">
+<div class="rxc"><div style="flex:1"><div class="rxd">{{ rx.drug }} <span style="font-size:14px;font-weight:500;color:#78716c">{{ rx.dose }}</span></div><div class="rxm">{{ rx.patient }} · {{ rx.freq }} · Refills: {{ rx.refills }} · Expires: {{ rx.expires }}</div></div><div class="rxact"><span class="{{ rx.statusClass }}">{{ rx.statusLabel }}</span><button class="obtn" style="font-size:12px;padding:4px 12px">Renew</button></div></div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isIntake }}" hint-placeholder-val="{{ false }}">
+<div class="page">
+<div class="bk" onClick="{{ goPat }}">← All Patients</div>
+<div class="sh"><div class="sh-t">New Patient Registration</div><div class="sh-s">Complete all sections to register the patient in MedTrack</div></div>
+<div class="intk">
+<div class="intk-card">
+<div class="intk-sec">Personal Information</div>
+<div class="intk-grid">
+<div class="intk-field"><div class="intk-lbl">First Name</div><input class="intk-inp" placeholder="First name" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Last Name</div><input class="intk-inp" placeholder="Last name" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Date of Birth</div><input class="intk-inp" placeholder="MM / DD / YYYY" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Sex</div><select class="intk-sel"><option value="">Select…</option><option>Male</option><option>Female</option><option>Other / Prefer not to say</option></select></div>
+<div class="intk-field"><div class="intk-lbl">Phone Number</div><input class="intk-inp" placeholder="+1 (___) ___-____" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Email Address</div><input class="intk-inp" placeholder="patient@email.com" type="text"></div>
+<div class="intk-field full"><div class="intk-lbl">Home Address</div><input class="intk-inp" placeholder="Street, City, State, ZIP" type="text"></div>
+</div>
+</div>
+<div class="intk-card">
+<div class="intk-sec">Insurance Information</div>
+<div class="intk-grid">
+<div class="intk-field"><div class="intk-lbl">Insurance Provider</div><input class="intk-inp" placeholder="e.g. BlueCross, Aetna, Cigna…" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Policy Number</div><input class="intk-inp" placeholder="Policy #" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Group Number</div><input class="intk-inp" placeholder="Group #" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Subscriber Name</div><input class="intk-inp" placeholder="Name on the policy" type="text"></div>
+</div>
+</div>
+<div class="intk-card">
+<div class="intk-sec">Medical History</div>
+<div class="intk-grid">
+<div class="intk-field full"><div class="intk-lbl">Existing Conditions / Diagnoses</div><textarea class="intk-ta" placeholder="e.g. Hypertension, Diabetes T2, Asthma…"></textarea></div>
+<div class="intk-field full"><div class="intk-lbl">Current Medications</div><textarea class="intk-ta" placeholder="List all medications, dosages, and frequency…"></textarea></div>
+<div class="intk-field full"><div class="intk-lbl">Known Allergies</div><textarea class="intk-ta" placeholder="e.g. Penicillin, Aspirin, Latex, Shellfish…" style="min-height:64px"></textarea></div>
+</div>
+</div>
+<div class="intk-card">
+<div class="intk-sec">Emergency Contact</div>
+<div class="intk-grid">
+<div class="intk-field"><div class="intk-lbl">Contact Name</div><input class="intk-inp" placeholder="Full name" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Relationship to Patient</div><select class="intk-sel"><option value="">Select…</option><option>Spouse / Partner</option><option>Parent</option><option>Child</option><option>Sibling</option><option>Friend</option><option>Other</option></select></div>
+<div class="intk-field"><div class="intk-lbl">Phone Number</div><input class="intk-inp" placeholder="+1 (___) ___-____" type="text"></div>
+</div>
+</div>
+<div class="intk-card">
+<div class="intk-sec">Fees &amp; Billing</div>
+<div class="intk-grid">
+<div class="intk-field"><div class="intk-lbl">Consultation Fee</div><input class="intk-inp" placeholder="e.g. $150.00" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Billing Type</div><select class="intk-sel"><option value="">Select…</option><option>Insurance (Primary)</option><option>Insurance + Copay</option><option>Self-Pay / Cash</option><option>Sliding Scale</option><option>Medicare</option><option>Medicaid</option></select></div>
+<div class="intk-field"><div class="intk-lbl">Copay Amount</div><input class="intk-inp" placeholder="e.g. $25.00 (if applicable)" type="text"></div>
+<div class="intk-field"><div class="intk-lbl">Preferred Payment Method</div><select class="intk-sel"><option value="">Select…</option><option>Credit / Debit Card</option><option>Bank Transfer (ACH)</option><option>Cash</option><option>Check</option><option>Health Savings Account (HSA)</option></select></div>
+<div class="intk-field full"><div class="intk-lbl">Billing Notes</div><textarea class="intk-ta" placeholder="e.g. Patient has secondary insurance, agreed on sliding scale rate of $80…" style="min-height:64px"></textarea></div>
+</div>
+</div>
+<div class="intk-act"><button class="obtn" onClick="{{ goPat }}">Cancel</button><button class="pbtn">Save &amp; Register Patient</button></div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { screen:'dashboard', activePatientIdx:0, activeTab:'history', darkMode:false, labPreviewOpen:false };
+
+  patients = [
+    { id:'P-0024', name:'Maria Santos', age:54, sex:'F', initials:'MS', avatarStyle:{background:'#d97706'}, condTag:'HTN', condClass:'badge b-am', lastVisit:'Jun 12', nextAppt:'Jun 30', dotClass:'dot d-gr', txtClass:'t-gr', statusLabel:'Active', dob:'Mar 12, 1970', phone:'+1 (555) 238-4102', insurance:'BlueCross #88341', totalVisits:3, lastVisitDate:'Jun 12', nextApptDate:'Jun 30', totalBilled:'$680' },
+    { id:'P-0031', name:'James Okafor', age:41, sex:'M', initials:'JO', avatarStyle:{background:'#0891b2'}, condTag:'Diabetes', condClass:'badge b-bl', lastVisit:'Jun 10', nextAppt:'Jul 5', dotClass:'dot d-gr', txtClass:'t-gr', statusLabel:'Active', dob:'Oct 22, 1984', phone:'+1 (555) 412-6631', insurance:'Aetna #91244', totalVisits:5, lastVisitDate:'Jun 10', nextApptDate:'Jul 5', totalBilled:'$1,480' },
+    { id:'P-0038', name:'Priya Mehta', age:29, sex:'F', initials:'PM', avatarStyle:{background:'#7c3aed'}, condTag:'Asthma', condClass:'badge b-pu', lastVisit:'Jun 8', nextAppt:'Jul 2', dotClass:'dot d-re', txtClass:'t-re', statusLabel:'Refill Due', dob:'Aug 4, 1996', phone:'+1 (555) 789-3340', insurance:'UnitedHealth #77821', totalVisits:2, lastVisitDate:'Jun 8', nextApptDate:'Jul 2', totalBilled:'$360' },
+    { id:'P-0041', name:'Kwame Asante', age:34, sex:'M', initials:'KA', avatarStyle:{background:'#059669'}, condTag:'New Patient', condClass:'badge b-gr', lastVisit:'—', nextAppt:'Today', dotClass:'dot d-bl', txtClass:'t-bl', statusLabel:'New', dob:'Feb 17, 1992', phone:'+1 (555) 204-9918', insurance:'Cigna #44102', totalVisits:0, lastVisitDate:'—', nextApptDate:'Jun 29', totalBilled:'$0' },
+    { id:'P-0019', name:'Anna Reyes', age:47, sex:'F', initials:'AR', avatarStyle:{background:'#db2777'}, condTag:'Thyroid', condClass:'badge b-pk', lastVisit:'Jun 5', nextAppt:'Jun 29', dotClass:'dot d-gr', txtClass:'t-gr', statusLabel:'Active', dob:'Nov 30, 1978', phone:'+1 (555) 678-2214', insurance:'Humana #55932', totalVisits:4, lastVisitDate:'Jun 5', nextApptDate:'Jun 29', totalBilled:'$920' },
+    { id:'P-0012', name:'Lena Vogel', age:61, sex:'F', initials:'LV', avatarStyle:{background:'#64748b'}, condTag:'Hypertension', condClass:'badge b-am', lastVisit:'Jun 3', nextAppt:'Jul 10', dotClass:'dot d-gr', txtClass:'t-gr', statusLabel:'Active', dob:'Apr 8, 1964', phone:'+1 (555) 901-3347', insurance:'Medicare #LV1964', totalVisits:8, lastVisitDate:'Jun 3', nextApptDate:'Jul 10', totalBilled:'$2,240' },
+  ];
+
+  visits = [
+    { day:'12', mon:'Jun 2026', type:'Follow-up Visit', notes:'BP 138/88 mmHg. Adjusted lisinopril to 10mg. Advised low-sodium diet, daily 30-min walks, and work stress reduction.', badge:'BP Check' },
+    { day:'03', mon:'May 2026', type:'Routine Check-up', notes:'BP 145/92. Added amlodipine 5mg. CBC and comprehensive metabolic panel ordered. Cholesterol slightly elevated.', badge:'Lab Ordered' },
+    { day:'20', mon:'Mar 2026', type:'Initial Consultation', notes:'Chief complaint: headaches and shortness of breath for 3 weeks. Dx: Stage 1 Hypertension (I10). Started lisinopril 5mg. Lifestyle modifications counselled.', badge:'New Dx' },
+  ];
+
+  diagnoses = [
+    { code:'I10', label:'Essential Hypertension, Stage 1', since:'Mar 2026', severity:'Managed', sevClass:'badge b-am' },
+    { code:'F41.1', label:'Anxiety Disorder, Generalised (mild)', since:'Mar 2026', severity:'Monitored', sevClass:'badge b-bl' },
+  ];
+
+  prescriptions = [
+    { drug:'Lisinopril', dose:'10mg', patient:'Maria Santos', freq:'Once daily', refills:2, expires:'Sep 2026', statusClass:'badge b-gr', statusLabel:'Active' },
+    { drug:'Amlodipine', dose:'5mg', patient:'Maria Santos', freq:'Once daily', refills:1, expires:'Sep 2026', statusClass:'badge b-gr', statusLabel:'Active' },
+    { drug:'Metformin', dose:'500mg', patient:'James Okafor', freq:'Twice daily', refills:3, expires:'Dec 2026', statusClass:'badge b-gr', statusLabel:'Active' },
+    { drug:'Salbutamol Inhaler', dose:'100mcg', patient:'Priya Mehta', freq:'As needed (PRN)', refills:0, expires:'Aug 2026', statusClass:'badge b-re', statusLabel:'Refill Due' },
+  ];
+
+  transactions = [
+    { patient:'Maria Santos', service:'Follow-up Consultation', date:'Jun 12', amount:'$150', stClass:'badge b-gr', stLabel:'Paid' },
+    { patient:'James Okafor', service:'Diabetes Review + Labs', date:'Jun 10', amount:'$220', stClass:'badge b-am', stLabel:'Pending' },
+    { patient:'Priya Mehta', service:'Routine Consultation', date:'Jun 8', amount:'$180', stClass:'badge b-gr', stLabel:'Paid' },
+    { patient:'Anna Reyes', service:'Thyroid Follow-up', date:'Jun 5', amount:'$130', stClass:'badge b-gr', stLabel:'Paid' },
+    { patient:'Lena Vogel', service:'Hypertension Check-up', date:'Jun 3', amount:'$150', stClass:'badge b-gr', stLabel:'Paid' },
+  ];
+
+  appointments = [
+    { time:'9:00 AM', name:'Maria Santos', type:'Follow-up · BP Check', dur:'30 min', cardClass:'ac', stBadge:'badge b-gr', stText:'Confirmed' },
+    { time:'10:30 AM', name:'James Okafor', type:'Diabetes Review · HbA1c', dur:'45 min', cardClass:'ac', stBadge:'badge b-bl', stText:'Confirmed' },
+    { time:'2:00 PM', name:'Kwame Asante', type:'Initial Consultation', dur:'60 min', cardClass:'ac', stBadge:'badge b-am', stText:'New Patient' },
+    { time:'3:30 PM', name:'Priya Mehta', type:'Rx Refill Request', dur:'15 min', cardClass:'ac canc', stBadge:'badge b-re', stText:'Cancelled' },
+  ];
+
+  labFiles = [
+    { name:'CBC Full Panel', type:'Blood Test · Jun 12, 2026', size:'142 KB', icon:'🩸' },
+    { name:'Comprehensive Metabolic Panel', type:'Blood Test · May 3, 2026', size:'98 KB', icon:'🧪' },
+    { name:'Lipid Profile', type:'Blood Test · Mar 20, 2026', size:'76 KB', icon:'💊' },
+  ];
+
+  componentDidMount() {
+    this._handler = (e) => {
+      const row = e.target.closest('[data-pt]');
+      if (row) { this.setState({ screen:'patient', activePatientIdx:+row.dataset.pt, activeTab:'history' }); return; }
+      const lb = e.target.closest('[data-lab-preview]');
+      if (lb) this.setState({ labPreviewOpen:true });
+    };
+    document.addEventListener('click', this._handler);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this._handler);
+  }
+
+  renderVals() {
+    const { screen, activePatientIdx, activeTab, darkMode, labPreviewOpen } = this.state;
+    const pt = this.patients[activePatientIdx] || this.patients[0];
+    const isDash = screen === 'dashboard';
+    const isPat = screen === 'patient';
+    const rxList = this.prescriptions.filter(r => r.patient === pt.name);
+    return {
+      isDashboard: isDash,
+      isPatient: isPat,
+      isFinancials: screen === 'financials',
+      isAppointments: screen === 'appointments',
+      isPrescriptions: screen === 'prescriptions',
+      isIntake: screen === 'intake',
+      navPat: (isDash || isPat) ? 'navlink active' : 'navlink',
+      navAppts: screen === 'appointments' ? 'navlink active' : 'navlink',
+      navFin: screen === 'financials' ? 'navlink active' : 'navlink',
+      navRx: screen === 'prescriptions' ? 'navlink active' : 'navlink',
+      goPat: () => this.setState({ screen:'dashboard' }),
+      goAppts: () => this.setState({ screen:'appointments' }),
+      goFin: () => this.setState({ screen:'financials' }),
+      goRx: () => this.setState({ screen:'prescriptions' }),
+      goBack: () => this.setState({ screen:'dashboard' }),
+      goIntake: () => this.setState({ screen:'intake' }),
+      toggleDark: () => { const n = !darkMode; this.setState({ darkMode:n }); document.body.classList.toggle('dark', n); },
+      darkTogClass: darkMode ? 'dk-tog on' : 'dk-tog',
+      darkLabel: darkMode ? '🌙' : '☀️',
+      patients: this.patients,
+      visits: this.visits,
+      diagnoses: this.diagnoses,
+      prescriptions: this.prescriptions,
+      rxForPatient: rxList,
+      hasNoRx: rxList.length === 0,
+      transactions: this.transactions,
+      appointments: this.appointments,
+      labFiles: this.labFiles,
+      labPreviewOpen,
+      closeLabPreview: () => this.setState({ labPreviewOpen:false }),
+      stopProp: (e) => e.stopPropagation(),
+      patientName: pt.name,
+      patientInitials: pt.initials,
+      patientAvatarStyle: pt.avatarStyle,
+      patientAge: pt.age,
+      patientSex: pt.sex,
+      patientId: pt.id,
+      patientDob: pt.dob,
+      patientPhone: pt.phone,
+      patientInsurance: pt.insurance,
+      patientTotalVisits: pt.totalVisits,
+      patientLastVisit: pt.lastVisitDate,
+      patientNextAppt: pt.nextApptDate,
+      patientBilled: pt.totalBilled,
+      tabH: activeTab === 'history' ? 'ptab active' : 'ptab',
+      tabD: activeTab === 'diagnoses' ? 'ptab active' : 'ptab',
+      tabR: activeTab === 'rx' ? 'ptab active' : 'ptab',
+      tabN: activeTab === 'notes' ? 'ptab active' : 'ptab',
+      tabL: activeTab === 'labs' ? 'ptab active' : 'ptab',
+      isHistTab: activeTab === 'history',
+      isDxTab: activeTab === 'diagnoses',
+      isRxTab: activeTab === 'rx',
+      isNotesTab: activeTab === 'notes',
+      isLabTab: activeTab === 'labs',
+      setTabH: () => this.setState({ activeTab:'history' }),
+      setTabD: () => this.setState({ activeTab:'diagnoses' }),
+      setTabR: () => this.setState({ activeTab:'rx' }),
+      setTabN: () => this.setState({ activeTab:'notes' }),
+      setTabL: () => this.setState({ activeTab:'labs' }),
+    };
+  }
+}
+</script>
+</body>
+</html>
