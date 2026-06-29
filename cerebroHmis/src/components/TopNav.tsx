@@ -11,7 +11,7 @@ export default function TopNav() {
 
   return (
     <div className="tnav">
-      <NavLink to="/patients" className="logo">MedTrack</NavLink>
+      <NavLink to="/patients" className="logo">CerebroHMIS</NavLink>
 
       <div className="fx gap8">
         <NavLink
